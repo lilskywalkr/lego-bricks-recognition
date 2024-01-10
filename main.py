@@ -56,4 +56,4 @@ def detect_and_highlight_studs(video_path):
     cv2.destroyAllWindows()
 
 # Replace 'path/to/your/video.mp4' with the path to your video file
-detect_and_highlight_studs('filmik.mp4')
+detect_and_highlight_studs('filmiki/filmik.mp4')
