@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 
+
 def detect_and_highlight_studs(video_path):
     cap = cv2.VideoCapture(video_path)
 
@@ -55,5 +56,6 @@ def detect_and_highlight_studs(video_path):
     cap.release()
     cv2.destroyAllWindows()
 
+
 # Replace 'path/to/your/video.mp4' with the path to your video file
-detect_and_highlight_studs('filmiki/filmik.mp4')
+detect_and_highlight_studs('filmiki/filmik3_compressed.mp4')
