@@ -5,12 +5,14 @@ import skimage
 brick_colors = {'blue': (162, 56, 2), 'red': (38, 33, 162), 'green': (60, 180, 120), 'orange': (40, 130, 220), 'pink': (160, 115, 225), 'brown': (45, 50, 82)}
 FONT = cv2.FONT_HERSHEY_SIMPLEX
 
+
 def find_closest_color(average_color):
     distances = {name: np.linalg.norm(np.array(average_color) - np.array(color)) for name, color in brick_colors.items()}
     closest_color = min(distances, key=distances.get)
     return closest_color
 
-def detect_and_highlight_studs(video_path):
+
+def brick_detection_and_color_recognition(video_path):
     cap = cv2.VideoCapture(video_path)
 
     # Get the original frame size
@@ -39,7 +41,7 @@ def detect_and_highlight_studs(video_path):
         blurred = cv2.GaussianBlur(gray, (15, 15), 0)
 
         _, threshold = cv2.threshold(blurred, 120, 255, cv2.THRESH_BINARY_INV)
-        #cv2.imshow('Studs Detection', threshold)
+        #cv2.imshow('brick detection', threshold)
 
         # Use Canny edge detector
         edges = cv2.Canny(threshold, 50, 150)
@@ -81,7 +83,7 @@ def detect_and_highlight_studs(video_path):
                 cv2.drawContours(frame, [approx], 0, (0, 255, 0), 2)
 
         # Display the result
-        cv2.imshow('Studs Detection', frame)
+        cv2.imshow('Lego bricks and color detection', frame)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
@@ -91,4 +93,4 @@ def detect_and_highlight_studs(video_path):
 
 
 # Replace 'path/to/your/video.mp4' with the path to your video file
-detect_and_highlight_studs('filmiki/fimlik5_compressed.mp4')
+brick_detection_and_color_recognition('filmiki/fimlik5_compressed.mp4')
