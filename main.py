@@ -1,6 +1,14 @@
 import cv2
 import numpy as np
+import skimage
 
+brick_colors = {'blue': (162, 56, 2), 'red': (38, 33, 162), 'green': (60, 180, 120), 'orange': (40, 130, 220), 'pink': (160, 115, 225), 'brown': (45, 50, 82)}
+FONT = cv2.FONT_HERSHEY_SIMPLEX
+
+def find_closest_color(average_color):
+    distances = {name: np.linalg.norm(np.array(average_color) - np.array(color)) for name, color in brick_colors.items()}
+    closest_color = min(distances, key=distances.get)
+    return closest_color
 
 def detect_and_highlight_studs(video_path):
     cap = cv2.VideoCapture(video_path)
@@ -28,10 +36,35 @@ def detect_and_highlight_studs(video_path):
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         # Apply GaussianBlur to reduce noise and aid edge detection
-        blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+        blurred = cv2.GaussianBlur(gray, (15, 15), 0)
+
+        _, threshold = cv2.threshold(blurred, 120, 255, cv2.THRESH_BINARY_INV)
+        #cv2.imshow('Studs Detection', threshold)
 
         # Use Canny edge detector
-        edges = cv2.Canny(blurred, 50, 150)
+        edges = cv2.Canny(threshold, 50, 150)
+
+        segments = skimage.measure.label(edges)
+        regions = skimage.measure.regionprops(segments)
+
+        filtered_regions = [region for region in regions if region.area > 400]
+
+        for region in filtered_regions:
+            y, x = region.centroid
+            cv2.line(frame, (int(x) + 200, int(y) - 200), (int(x), int(y)), (0, 0, 0), 10)
+            region = region.slice
+            image = frame[region]
+            avg = np.mean(image, axis=(0, 1))
+            color = find_closest_color(avg)
+            cv2.putText(
+                img=frame,
+                text=color,
+                org=((int(x) + 200, int(y) - 200)),
+                fontFace=FONT,
+                fontScale=2,
+                color=(0, 0, 0),
+                thickness=4,
+            )
 
         # Find contours in the edged image
         contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -58,4 +91,4 @@ def detect_and_highlight_studs(video_path):
 
 
 # Replace 'path/to/your/video.mp4' with the path to your video file
-detect_and_highlight_studs('filmiki/filmik3_compressed.mp4')
+detect_and_highlight_studs('filmiki/fimlik5_compressed.mp4')
