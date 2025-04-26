@@ -20,8 +20,8 @@ def brick_detection_and_color_recognition(video_path):
     frame_height = int(cap.get(4))
 
     # Set the desired window size
-    window_width = 1920
-    window_height = 1080
+    window_width = 1024
+    window_height = 900
 
     # Calculate the scale factor
     scale_factor = min(window_width / frame_width, window_height / frame_height)
@@ -93,4 +93,4 @@ def brick_detection_and_color_recognition(video_path):
 
 
 # Replace 'path/to/your/video.mp4' with the path to your video file
-brick_detection_and_color_recognition('filmiki/fimlik5_compressed.mp4')
+brick_detection_and_color_recognition('video/lego_bricks.mp4')
