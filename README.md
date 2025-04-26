@@ -77,7 +77,9 @@ It uses **OpenCV** for image processing and **scikit-image** for region detectio
 
 Here are some example screenshots showing how the system detects bricks:
 
-
+![showcase_1](https://github.com/user-attachments/assets/e05099d9-69a4-45fe-a3a5-c9ee8adfd753)
+![showcase_2](https://github.com/user-attachments/assets/cab0e859-5327-49ab-a4f7-7b64714d6071)
+![showcase_3](https://github.com/user-attachments/assets/11555172-90c9-417f-be2d-da6e169ea588)
 
 ---
 
